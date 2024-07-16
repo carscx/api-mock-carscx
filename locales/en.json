@@ -1,0 +1,9 @@
+{
+  "validation_failed": "Validation failed",
+  "email_already_exist": "Email Already Exist",
+  "user_created_successfully": "User Created Successfully",
+  "something_went_wrong": "Something went wrong",
+  "invalid_credentials": "Invalid Credentials",
+  "authentication_successful": "Authentication successful",
+  "welcome_message": "Welcome to the blog application"
+}

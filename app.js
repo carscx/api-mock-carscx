@@ -1,15 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser')
-const app = express();
+require('dotenv').config() // Cargar variables de entorno al inicio de la aplicación
+const express = require('express')
+const setupMiddlewares = require('./middlewares/setupMiddlewares')
+const routes = require('./routes')
 
-const postsRoute = require('./routes/posts')
-const userRoute = require('./routes/user')
+const app = express()
 
-app.use(bodyParser.json())
+// Configuración de middlewares
+setupMiddlewares(app)
 
-app.use('/posts', postsRoute)
-app.use('/user', userRoute)
-
-
+// Configuración de rutas
+app.use('/', routes)
 
 module.exports = app
