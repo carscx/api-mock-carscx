@@ -2,10 +2,16 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('Users', 'refreshToken', {
-      type: Sequelize.STRING,
-      allowNull: true,
-    })
+    const tableName = 'Users'
+    const columnName = 'refreshToken'
+    const tableDesc = await queryInterface.describeTable(tableName)
+
+    if (!tableDesc[columnName]) {
+      await queryInterface.addColumn(tableName, columnName, {
+        type: Sequelize.STRING,
+        allowNull: true,
+      })
+    }
   },
 
   down: async (queryInterface, Sequelize) => {
