@@ -122,8 +122,37 @@ const refreshToken = (req, res) => {
   })
 }
 
+const logout = (req, res) => {
+  const { refreshToken } = req.body
+  if (!refreshToken) {
+    return ResponseHandler.error(res, req.t('missing_token'), {}, 400)
+  }
+
+  jwt.verify(refreshToken, 'refreshSecret', (err, decoded) => {
+    if (err) {
+      return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)
+    }
+
+    models.User.findOne({ where: { id: decoded.userId, refreshToken } })
+      .then((user) => {
+        if (!user) {
+          return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)
+        }
+
+        user
+          .update({ refreshToken: null }) // Invalida el refresh token
+          .then(() => {
+            return ResponseHandler.success(res, req.t('logout_successful'))
+          })
+          .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+      })
+      .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+  })
+}
+
 module.exports = {
   signUp,
   login,
   refreshToken,
+  logout,
 }

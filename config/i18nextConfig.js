@@ -9,7 +9,7 @@ i18next
     fallbackLng: 'en',
     preload: ['en', 'es'],
     backend: {
-      loadPath: __dirname + '@locales/{{lng}}.json',
+      loadPath: __dirname + '/../locales/{{lng}}.json',
     },
     detection: {
       order: ['path', 'cookie', 'header'],

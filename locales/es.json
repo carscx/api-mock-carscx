@@ -4,6 +4,9 @@
   "user_created_successfully": "Usuario creado con éxito",
   "something_went_wrong": "Algo salió mal",
   "invalid_credentials": "Credenciales inválidas",
+  "invalid_token": "Credenciales inválidas",
+  "missing_token": "Credenciales inválidas",
   "authentication_successful": "Autenticación exitosa",
-  "welcome_message": "Bienvenido a la aplicación de blog"
+  "welcome_message": "Bienvenido a la aplicación de blog",
+  "logout_successful": "Cierre de sesión exitoso"
 }
