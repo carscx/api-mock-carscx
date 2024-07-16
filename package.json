@@ -23,6 +23,7 @@
     "i18next-fs-backend": "^2.3.1",
     "i18next-http-middleware": "^3.6.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "mysql2": "^3.10.3",
     "nodemon": "^3.1.4",
     "pg": "^8.8.0",
@@ -31,5 +32,14 @@
   },
   "devDependencies": {
     "sequelize-cli": "^6.5.2"
+  },
+  "_moduleAliases": {
+    "@config": "config",
+    "@controllers": "controllers",
+    "@middlewares": "middlewares",
+    "@routes": "routes",
+    "@models": "models",
+    "@utils": "utils",
+    "@locales": "locales"
   }
 }

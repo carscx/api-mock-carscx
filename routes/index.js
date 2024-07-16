@@ -1,6 +1,6 @@
 const express = require('express')
-const postsRoute = require('./posts')
-const authRoute = require('./auth')
+const postsRoute = require('@routes/posts')
+const authRoute = require('@routes/auth')
 
 const router = express.Router()
 

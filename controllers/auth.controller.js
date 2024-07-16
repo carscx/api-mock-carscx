@@ -1,8 +1,8 @@
 const Validator = require('fastest-validator')
-const models = require('../models')
+const models = require('@models')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const ResponseHandler = require('../utils/ResponseHandler') // Asegúrate de ajustar la ruta según tu estructura de proyecto
+const ResponseHandler = require('@utils/ResponseHandler') // Asegúrate de ajustar la ruta según tu estructura de proyecto
 
 const v = new Validator()
 

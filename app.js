@@ -1,7 +1,8 @@
-require('dotenv').config() // Cargar variables de entorno al inicio de la aplicación
+require('module-alias/register')
+
 const express = require('express')
-const setupMiddlewares = require('./middlewares/setupMiddlewares')
-const routes = require('./routes')
+const setupMiddlewares = require('@middlewares/setupMiddlewares')
+const routes = require('@routes')
 
 const app = express()
 
