@@ -1,0 +1,10 @@
+2024-07-17 13:27:12 error: SequelizeAccessDeniedError: Access denied for user 'carscx'@'localhost' (using password: YES)
+    at ConnectionManager.connect (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:94:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ConnectionManager._connect (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:222:24)
+    at async /home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:174:32
+    at async ConnectionManager.getConnection (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:197:7)
+    at async /home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/sequelize.js:305:26
+    at async MySQLQueryInterface.select (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async User.findAll (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/model.js:1140:21)
+    at async User.findOne (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/model.js:1240:12)
