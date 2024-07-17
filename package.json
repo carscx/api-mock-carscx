@@ -27,7 +27,8 @@
     "nodemon": "^3.1.4",
     "pg": "^8.8.0",
     "sequelize": "^6.26.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "winston": "^3.13.1"
   },
   "devDependencies": {
     "sequelize-cli": "^6.5.2"

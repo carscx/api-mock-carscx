@@ -2,7 +2,8 @@ const Validator = require('fastest-validator')
 const models = require('@models')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const ResponseHandler = require('@utils/ResponseHandler') // Asegúrate de ajustar la ruta según tu estructura de proyecto
+const ResponseHandler = require('@utils/ResponseHandler')
+const logger = require('@config/logger')
 
 const v = new Validator()
 
@@ -15,6 +16,7 @@ const userSchema = {
 const handleValidation = (user, res, req) => {
   const validationResponse = v.validate(user, userSchema)
   if (validationResponse !== true) {
+    logger.error('Validation failed', { validationResponse })
     return ResponseHandler.validationError(res, req.t('validation_failed'), validationResponse)
   }
   return true
@@ -22,12 +24,21 @@ const handleValidation = (user, res, req) => {
 
 const createUser = (user, res, req) => {
   bcryptjs.genSalt(10, (err, salt) => {
-    if (err) return ResponseHandler.error(res, req.t('something_went_wrong'))
+    if (err) {
+      logger.error('Error generating salt', err)
+      return ResponseHandler.error(res, req.t('something_went_wrong'))
+    }
     bcryptjs.hash(user.password, salt, (err, hash) => {
-      if (err) return ResponseHandler.error(res, req.t('something_went_wrong'))
+      if (err) {
+        logger.error('Error hashing password', err)
+        return ResponseHandler.error(res, req.t('something_went_wrong'))
+      }
       models.User.create({ ...user, password: hash })
         .then(() => ResponseHandler.created(res, req.t('user_created_successfully')))
-        .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+        .catch((error) => {
+          logger.error('Error creating user', error)
+          ResponseHandler.error(res, req.t('something_went_wrong'))
+        })
     })
   })
 }
@@ -47,7 +58,10 @@ const signUp = (req, res) => {
       }
       createUser(user, res, req)
     })
-    .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+    .catch((error) => {
+      logger.error('Error finding user', error)
+      ResponseHandler.error(res, req.t('something_went_wrong'))
+    })
 }
 
 const generateTokens = (user) => {
@@ -67,7 +81,10 @@ const login = (req, res) => {
         return ResponseHandler.error(res, req.t('invalid_credentials'), {}, 401)
       }
       bcryptjs.compare(req.body.password, user.password, (err, result) => {
-        if (err) return ResponseHandler.error(res, req.t('something_went_wrong'))
+        if (err) {
+          logger.error('Error comparing password', err)
+          return ResponseHandler.error(res, req.t('something_went_wrong'))
+        }
         if (!result) {
           return ResponseHandler.error(res, req.t('invalid_credentials'), {}, 401)
         }
@@ -82,20 +99,28 @@ const login = (req, res) => {
             }
             return ResponseHandler.loginSuccess(res, accessToken, refreshToken, userData)
           })
-          .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+          .catch((error) => {
+            logger.error('Error updating user with refresh token', error)
+            ResponseHandler.error(res, req.t('something_went_wrong'))
+          })
       })
     })
-    .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+    .catch((error) => {
+      logger.error('Error finding user for login', error)
+      ResponseHandler.error(res, req.t('something_went_wrong'))
+    })
 }
 
 const refreshToken = (req, res) => {
   const { refreshToken } = req.body
   if (!refreshToken) {
+    logger.error('Missing refresh token')
     return ResponseHandler.error(res, req.t('missing_token'), {}, 400)
   }
 
   jwt.verify(refreshToken, 'refreshSecret', (err, decoded) => {
     if (err) {
+      logger.error('Error verifying refresh token', err)
       return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)
     }
 
@@ -116,20 +141,28 @@ const refreshToken = (req, res) => {
             }
             return ResponseHandler.loginSuccess(res, accessToken, newRefreshToken, userData)
           })
-          .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+          .catch((error) => {
+            logger.error('Error updating user with new refresh token', error)
+            ResponseHandler.error(res, req.t('something_went_wrong'))
+          })
       })
-      .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+      .catch((error) => {
+        logger.error('Error finding user for refresh token', error)
+        ResponseHandler.error(res, req.t('something_went_wrong'))
+      })
   })
 }
 
 const logout = (req, res) => {
   const { refreshToken } = req.body
   if (!refreshToken) {
+    logger.error('Missing refresh token')
     return ResponseHandler.error(res, req.t('missing_token'), {}, 400)
   }
 
   jwt.verify(refreshToken, 'refreshSecret', (err, decoded) => {
     if (err) {
+      logger.error('Error verifying refresh token', err)
       return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)
     }
 
@@ -144,9 +177,15 @@ const logout = (req, res) => {
           .then(() => {
             return ResponseHandler.success(res, req.t('logout_successful'))
           })
-          .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+          .catch((error) => {
+            logger.error('Error updating user for logout', error)
+            ResponseHandler.error(res, req.t('something_went_wrong'))
+          })
       })
-      .catch(() => ResponseHandler.error(res, req.t('something_went_wrong')))
+      .catch((error) => {
+        logger.error('Error finding user for logout', error)
+        ResponseHandler.error(res, req.t('something_went_wrong'))
+      })
   })
 }
 
