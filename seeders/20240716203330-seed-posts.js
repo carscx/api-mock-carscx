@@ -3,10 +3,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Obtener el ID del usuario "Carlos Santos"
-    // const [users] = await queryInterface.sequelize.query(
-    //   'SELECT id FROM Users WHERE email = "karscx@gmail.com"'
-    // )
-    const userId = '79c4660e-443e-11ef-ae0c-005056010910'
+    const [users] = await queryInterface.sequelize.query(
+      'SELECT id FROM Users WHERE email = "karscx@gmail.com"'
+    )
+    const userId = users[0].id
 
     // Datos para los posts
     const posts = [
