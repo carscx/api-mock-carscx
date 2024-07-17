@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
+    "init:data:production": "node init-database.js --env production",
+    "init:data:dev": "node init-database.js --env development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "jamshi",

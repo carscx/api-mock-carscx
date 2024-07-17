@@ -1,16 +1,23 @@
-// migrations/{timestamp}-create-userRole.js
 'use strict'
-
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('UserRoles', {
       userId: {
         type: Sequelize.UUID,
-        primaryKey: true,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
       roleId: {
         type: Sequelize.UUID,
-        primaryKey: true,
+        allowNull: false,
+        references: {
+          model: 'Roles',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
@@ -22,7 +29,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('UserRoles')
   },
 }

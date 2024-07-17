@@ -1,8 +1,6 @@
-// migrations/{timestamp}-create-permission.js
 'use strict'
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Permissions', {
       id: {
         allowNull: false,
@@ -13,7 +11,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -25,7 +22,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Permissions')
   },
 }

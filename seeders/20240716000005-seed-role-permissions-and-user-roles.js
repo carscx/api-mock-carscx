@@ -2,7 +2,6 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Obtener IDs de los roles y permisos
     const [roles] = await queryInterface.sequelize.query(
       'SELECT id FROM Roles WHERE name = "admin"'
     )
