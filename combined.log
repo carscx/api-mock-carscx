@@ -8,3 +8,14 @@
     at async MySQLQueryInterface.select (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
     at async User.findAll (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/model.js:1140:21)
     at async User.findOne (/home/linuxadmin/api-mock-carscx/node_modules/sequelize/lib/model.js:1240:12)
+2024-07-17 23:50:45 error: SequelizeConnectionRefusedError: connect ECONNREFUSED 127.0.0.1:3306
+    at ConnectionManager.connect (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:92:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async ConnectionManager._connect (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:222:24)
+    at async /home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:174:32
+    at async ConnectionManager.getConnection (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:197:7)
+    at async /home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/sequelize.js:305:26
+    at async MySQLQueryInterface.select (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:12)
+    at async User.findAll (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/model.js:1140:21)
+    at async User.findOne (/home/csantos/proyectos/api-mock-carscx/node_modules/sequelize/lib/model.js:1240:12)
+    at async login (/home/csantos/proyectos/api-mock-carscx/controllers/auth.controller.js:42:18)
