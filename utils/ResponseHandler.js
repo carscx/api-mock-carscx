@@ -1,43 +1,46 @@
-class ResponseHandler {
-  static success(res, message, data = {}) {
-    return res.status(200).json({
-      status: 'success',
-      message,
-      data,
-    })
-  }
-
-  static created(res, message, data = {}) {
-    return res.status(201).json({
-      status: 'success',
-      message,
-      data,
-    })
-  }
-
-  static error(res, message, errors = {}, statusCode = 500) {
-    return res.status(statusCode).json({
-      status: 'error',
-      message,
-      errors,
-    })
-  }
-
-  static validationError(res, message, errors) {
-    return res.status(400).json({
-      status: 'fail',
-      message,
-      errors,
-    })
-  }
-
-  static loginSuccess(res, accessToken, refreshToken, userData) {
-    return res.status(200).json({
-      accessToken,
-      refreshToken,
-      data: userData,
-    })
-  }
+const validationError = (res, message, details) => {
+  return res.status(400).json({
+    status: 'error',
+    message,
+    details,
+  })
 }
 
-module.exports = ResponseHandler
+const error = (res, message, status = 500) => {
+  return res.status(status).json({
+    status: 'error',
+    message,
+  })
+}
+
+const created = (res, message) => {
+  return res.status(201).json({
+    status: 'success',
+    message,
+  })
+}
+
+const loginSuccess = (res, accessToken, refreshToken, user) => {
+  return res.status(200).json({
+    status: 'success',
+    message: 'Login successful',
+    accessToken,
+    refreshToken,
+    user,
+  })
+}
+
+const success = (res, message) => {
+  return res.status(200).json({
+    status: 'success',
+    message,
+  })
+}
+
+module.exports = {
+  validationError,
+  error,
+  created,
+  loginSuccess,
+  success,
+}

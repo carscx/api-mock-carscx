@@ -41,6 +41,7 @@
     "@middlewares": "middlewares",
     "@routes": "routes",
     "@models": "models",
+    "@helpers": "helpers",
     "@utils": "utils",
     "@locales": "locales"
   }
