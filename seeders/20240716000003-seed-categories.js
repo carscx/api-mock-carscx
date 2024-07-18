@@ -2,30 +2,48 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert(
-      'Categories',
-      [
+    const categories = [
+      {
+        name: 'Technology',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'Science',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'Health',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]
+
+    for (const category of categories) {
+      const exists = await queryInterface.rawSelect(
+        'Categories',
         {
-          name: 'Technology',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          where: {
+            name: category.name,
+          },
         },
-        {
-          name: 'Science',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          name: 'Health',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    )
+        ['id']
+      )
+
+      if (!exists) {
+        await queryInterface.bulkInsert('Categories', [category], {})
+      }
+    }
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Categories', null, {})
+    await queryInterface.bulkDelete(
+      'Categories',
+      {
+        name: ['Technology', 'Science', 'Health'],
+      },
+      {}
+    )
   },
 }

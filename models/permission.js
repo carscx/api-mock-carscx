@@ -1,4 +1,3 @@
-// models/permission.js
 'use strict'
 const { Model, DataTypes } = require('sequelize')
 

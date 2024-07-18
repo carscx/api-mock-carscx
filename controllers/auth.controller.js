@@ -65,12 +65,20 @@ const signUp = (req, res) => {
 }
 
 const generateTokens = (user) => {
-  const accessToken = jwt.sign({ email: user.email, userId: user.id }, 'accessSecret', {
-    expiresIn: '15m',
-  })
-  const refreshToken = jwt.sign({ email: user.email, userId: user.id }, 'refreshSecret', {
-    expiresIn: '7d',
-  })
+  const accessToken = jwt.sign(
+    { email: user.email, userId: user.id },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: '15m',
+    }
+  )
+  const refreshToken = jwt.sign(
+    { email: user.email, userId: user.id },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: '7d',
+    }
+  )
   return { accessToken, refreshToken }
 }
 
@@ -118,7 +126,7 @@ const refreshToken = (req, res) => {
     return ResponseHandler.error(res, req.t('missing_token'), {}, 400)
   }
 
-  jwt.verify(refreshToken, 'refreshSecret', (err, decoded) => {
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       logger.error('Error verifying refresh token', err)
       return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)
@@ -160,7 +168,7 @@ const logout = (req, res) => {
     return ResponseHandler.error(res, req.t('missing_token'), {}, 400)
   }
 
-  jwt.verify(refreshToken, 'refreshSecret', (err, decoded) => {
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       logger.error('Error verifying refresh token', err)
       return ResponseHandler.error(res, req.t('invalid_token'), {}, 403)

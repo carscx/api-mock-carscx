@@ -12,18 +12,33 @@ module.exports = {
     )
     const adminRoleId = roles[0].id
 
-    await queryInterface.bulkInsert(
+    // Verificar si el rol de admin ya está asignado al usuario
+    const userRoleExists = await queryInterface.rawSelect(
       'UserRoles',
-      [
-        {
+      {
+        where: {
           userId: userId,
           roleId: adminRoleId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
-      ],
-      {}
+      },
+      ['id']
     )
+
+    if (!userRoleExists) {
+      // Asignar el rol de admin al usuario
+      await queryInterface.bulkInsert(
+        'UserRoles',
+        [
+          {
+            userId: userId,
+            roleId: adminRoleId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        {}
+      )
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

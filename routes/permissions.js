@@ -1,13 +1,12 @@
 const express = require('express')
 const permissionsController = require('@controllers/permissions.controller')
-const { verifyToken, checkRole } = require('@middlewares/auth')
+const { checkAuthAndRole } = require('@middlewares/check.auth')
 
 const router = express.Router()
 
 router.post(
   '/create-permission',
-  verifyToken,
-  checkRole(['admin']),
+  checkAuthAndRole(['admin', 'editor']),
   permissionsController.createPermission
 )
 

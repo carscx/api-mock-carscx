@@ -1,4 +1,5 @@
 require('module-alias/register')
+require('dotenv').config();
 
 const express = require('express')
 const setupMiddlewares = require('@middlewares/setupMiddlewares')

@@ -37,10 +37,32 @@ module.exports = {
       },
     ]
 
-    await queryInterface.bulkInsert('Posts', posts, {})
+    for (const post of posts) {
+      const exists = await queryInterface.rawSelect(
+        'Posts',
+        {
+          where: {
+            title: post.title,
+            userId: post.userId,
+          },
+        },
+        ['id']
+      )
+
+      if (!exists) {
+        await queryInterface.bulkInsert('Posts', [post], {})
+      }
+    }
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Posts', null, {})
+    const postTitles = ['First Post', 'Second Post', 'Third Post']
+    await queryInterface.bulkDelete(
+      'Posts',
+      {
+        title: postTitles,
+      },
+      {}
+    )
   },
 }

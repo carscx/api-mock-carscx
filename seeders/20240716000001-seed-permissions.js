@@ -29,7 +29,21 @@ module.exports = {
       },
     ]
 
-    await queryInterface.bulkInsert('Permissions', permissions, {})
+    for (const permission of permissions) {
+      const exists = await queryInterface.rawSelect(
+        'Permissions',
+        {
+          where: {
+            name: permission.name,
+          },
+        },
+        ['id']
+      )
+
+      if (!exists) {
+        await queryInterface.bulkInsert('Permissions', [permission], {})
+      }
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

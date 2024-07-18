@@ -13,28 +13,62 @@ module.exports = {
     )
     const userId = users[0].id
 
-    // Asignar el rol de admin al usuario
-    await queryInterface.bulkInsert(
+    // Verificar si el rol de admin ya está asignado al usuario
+    const userRoleExists = await queryInterface.rawSelect(
       'UserRoles',
-      [
-        {
+      {
+        where: {
           userId: userId,
           roleId: adminRoleId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
-      ],
-      {}
+      },
+      ['id']
     )
 
-    // Asignar todos los permisos al rol de admin
-    const rolePermissions = permissions.map((permission) => ({
-      roleId: adminRoleId,
-      permissionId: permission.id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }))
-    await queryInterface.bulkInsert('RolePermissions', rolePermissions, {})
+    if (!userRoleExists) {
+      // Asignar el rol de admin al usuario
+      await queryInterface.bulkInsert(
+        'UserRoles',
+        [
+          {
+            userId: userId,
+            roleId: adminRoleId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        {}
+      )
+    }
+
+    // Verificar si los permisos ya están asignados al rol de admin
+    for (const permission of permissions) {
+      const rolePermissionExists = await queryInterface.rawSelect(
+        'RolePermissions',
+        {
+          where: {
+            roleId: adminRoleId,
+            permissionId: permission.id,
+          },
+        },
+        ['id']
+      )
+
+      if (!rolePermissionExists) {
+        await queryInterface.bulkInsert(
+          'RolePermissions',
+          [
+            {
+              roleId: adminRoleId,
+              permissionId: permission.id,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          ],
+          {}
+        )
+      }
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

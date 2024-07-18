@@ -10,7 +10,22 @@ module.exports = {
         updatedAt: new Date(),
       },
     ]
-    await queryInterface.bulkInsert('Roles', roles, {})
+
+    for (const role of roles) {
+      const exists = await queryInterface.rawSelect(
+        'Roles',
+        {
+          where: {
+            name: role.name,
+          },
+        },
+        ['id']
+      )
+
+      if (!exists) {
+        await queryInterface.bulkInsert('Roles', [role], {})
+      }
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

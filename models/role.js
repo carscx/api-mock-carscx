@@ -1,4 +1,3 @@
-// models/role.js
 'use strict'
 const { Model, DataTypes } = require('sequelize')
 
