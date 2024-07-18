@@ -1,6 +1,6 @@
 const models = require('@models')
 const logger = require('@config/logger')
-const ResponseHandler = require('@utils/responseHandler')
+const ResponseHandler = require('@utils/ResponseHandler')
 const { validateUser } = require('@helpers/validation')
 const { generateTokens, verifyToken } = require('@helpers/token')
 const { hashPassword, comparePassword } = require('@helpers/hash')
