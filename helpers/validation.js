@@ -1,6 +1,6 @@
 const Validator = require('fastest-validator')
 const logger = require('@config/logger')
-const ResponseHandler = require('@utils/responseHandler')
+const ResponseHandler = require('@utils/ResponseHandler')
 
 const v = new Validator()
 
